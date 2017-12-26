@@ -85,6 +85,13 @@ class Post
      */
     private $tags;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="draft", type="boolean")
+     */
+    private $draft = false;
+
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
@@ -193,5 +200,21 @@ class Post
     public function getTags(): Collection
     {
         return $this->tags;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDraft(): bool
+    {
+        return $this->draft;
+    }
+
+    /**
+     * @param bool $draft
+     */
+    public function setDraft(bool $draft): void
+    {
+        $this->draft = $draft;
     }
 }
