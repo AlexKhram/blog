@@ -25,17 +25,22 @@ class Tag
      */
     private $name;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setName(string $name): void
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
-    public function getName(): string
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function __toString()
     {
         return $this->name;
     }
