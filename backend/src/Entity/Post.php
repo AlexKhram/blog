@@ -39,8 +39,8 @@ class Post
      *
      * @ORM\Column(type="string")
      */
-
     private $slug;
+
     /**
      * @var string
      *
@@ -99,7 +99,7 @@ class Post
      *
      * @ORM\Column(name="draft", type="boolean")
      */
-    private $draft = false;
+    private $published = false;
 
     /**
      * @var \DateTime
@@ -108,6 +108,14 @@ class Post
      * @Assert\DateTime
      */
     private $publishedAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime
+     */
+    private $unpublishedAt;
 
     /**
      * @var \DateTime
@@ -123,6 +131,9 @@ class Post
      */
     private $updatedAt;
 
+    /**
+     * Post constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -130,66 +141,105 @@ class Post
         $this->tags      = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return null|string
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string $title
+     */
     public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
+    /**
+     * @return null|string
+     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
+    /**
+     * @param string $slug
+     */
     public function setSlug(string $slug): void
     {
         $this->slug = $slug;
     }
 
+    /**
+     * @return null|string
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @param string $content
+     */
     public function setContent(string $content): void
     {
         $this->content = $content;
     }
 
+    /**
+     * @return \DateTime|null
+     */
     public function getPublishedAt(): ?\DateTime
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTime $publishedAt): void
+    /**
+     * @param \DateTime|null $publishedAt
+     */
+    public function setPublishedAt(?\DateTime $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }
 
-    public function getAuthor(): User
+    /**
+     * @return \DateTime|null
+     */
+    public function getUnpublishedAt(): ?\DateTime
     {
-        return $this->author;
+        return $this->unpublishedAt;
     }
 
-    public function setAuthor(User $author): void
+    /**
+     * @param \DateTime|null $unpublishedAt
+     */
+    public function setUnpublishedAt(?\DateTime $unpublishedAt): void
     {
-        $this->author = $author;
+        $this->unpublishedAt = $unpublishedAt;
     }
 
+    /**
+     * @return Collection
+     */
     public function getComments(): Collection
     {
         return $this->comments;
     }
 
+    /**
+     * @param Comment $comment
+     */
     public function addComment(Comment $comment): void
     {
         $comment->setPost($this);
@@ -198,22 +248,34 @@ class Post
         }
     }
 
+    /**
+     * @param Comment $comment
+     */
     public function removeComment(Comment $comment): void
     {
         $comment->setPost(null);
         $this->comments->removeElement($comment);
     }
 
+    /**
+     * @return null|string
+     */
     public function getSummary(): ?string
     {
         return $this->summary;
     }
 
+    /**
+     * @param string $summary
+     */
     public function setSummary(string $summary): void
     {
         $this->summary = $summary;
     }
 
+    /**
+     * @param Tag[] ...$tags
+     */
     public function addTag(Tag ...$tags): void
     {
         foreach ($tags as $tag) {
@@ -223,11 +285,17 @@ class Post
         }
     }
 
+    /**
+     * @param Tag $tag
+     */
     public function removeTag(Tag $tag): void
     {
         $this->tags->removeElement($tag);
     }
 
+    /**
+     * @return Collection
+     */
     public function getTags(): Collection
     {
         return $this->tags;
@@ -236,17 +304,19 @@ class Post
     /**
      * @return bool
      */
-    public function isDraft(): bool
+    public function isPublished(): bool
     {
-        return $this->draft;
+        return $this->published;
     }
 
     /**
-     * @param bool $draft
+     * @param bool $published
      */
-    public function setDraft(bool $draft): void
+    public function setPublished(bool $published): void
     {
-        $this->draft = $draft;
+        $this->setPublishedAt($published ? new \DateTime() : null);
+        $this->setUnpublishedAt(!$published ? new \DateTime() : null);
+        $this->published = $published;
     }
 
     /**
@@ -265,7 +335,10 @@ class Post
         $this->createdAt = $createdAt;
     }
 
-    public function setImageFile(File $image = null)
+    /**
+     * @param File|null $image
+     */
+    public function setImageFile(File $image = null): void
     {
         $this->imageFile = $image;
 
@@ -283,12 +356,18 @@ class Post
         return $this->imageFile;
     }
 
-    public function setImage($image)
+    /**
+     * @param null|string $image
+     */
+    public function setImage(?string $image): void
     {
         $this->image = $image;
     }
 
-    public function getImage()
+    /**
+     * @return null|string
+     */
+    public function getImage(): ?string
     {
         return $this->image;
     }

@@ -22,7 +22,6 @@ class Version20171220164701 extends AbstractMigration
         $this->addSql('ALTER TABLE comment ADD CONSTRAINT FK_9474526C4B89032C FOREIGN KEY (post_id) REFERENCES post (id)');
         $this->addSql('ALTER TABLE post_tag ADD CONSTRAINT FK_5ACE3AF04B89032C FOREIGN KEY (post_id) REFERENCES post (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE post_tag ADD CONSTRAINT FK_5ACE3AF0BAD26311 FOREIGN KEY (tag_id) REFERENCES tag (id) ON DELETE CASCADE');
-        $this->addSql('DROP TABLE blog_post');
     }
 
     public function down(Schema $schema)
@@ -33,7 +32,6 @@ class Version20171220164701 extends AbstractMigration
         $this->addSql('ALTER TABLE post_tag DROP FOREIGN KEY FK_5ACE3AF0BAD26311');
         $this->addSql('ALTER TABLE comment DROP FOREIGN KEY FK_9474526C4B89032C');
         $this->addSql('ALTER TABLE post_tag DROP FOREIGN KEY FK_5ACE3AF04B89032C');
-        $this->addSql('CREATE TABLE blog_post (id INT AUTO_INCREMENT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('DROP TABLE tag');
         $this->addSql('DROP TABLE comment');
         $this->addSql('DROP TABLE post');
