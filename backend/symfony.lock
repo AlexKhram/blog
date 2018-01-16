@@ -83,9 +83,6 @@
     "pagerfanta/pagerfanta": {
         "version": "v1.0.5"
     },
-    "paragonie/random_compat": {
-        "version": "v2.0.11"
-    },
     "psr/cache": {
         "version": "1.0.1"
     },
