@@ -5,18 +5,22 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
  * @ORM\Table(name="post")
+ * @UniqueEntity("slug")
  *
  * @Vich\Uploadable
  */
 class Post
 {
+    public const NUM_ITEMS = 10;
+
     /**
      * @var int
      *
@@ -370,5 +374,10 @@ class Post
     public function getImage(): ?string
     {
         return $this->image;
+    }
+
+    public function __toString()
+    {
+        return $this->slug;
     }
 }

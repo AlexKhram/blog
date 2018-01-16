@@ -25,8 +25,13 @@ easy_admin:
                     - 'content'
                     - { property: 'imageFile', type: 'vich_image' }
                     - { property: 'tags', type_options: { expanded: true, multiple: true } }
+                    - { property: 'comments', type_options: { expanded: true, multiple: true } }
         Comment:
             class: App\Entity\Comment
+            form:
+                fields:
+                    - 'content'
+                    - 'post'
         Tag:
             class: App\Entity\Tag
             label: 'Tag'

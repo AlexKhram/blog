@@ -64,7 +64,7 @@ class Comment
         return !$containsInvalidCharacters;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -89,7 +89,7 @@ class Comment
         $this->publishedAt = $publishedAt;
     }
 
-    public function getPost(): Post
+    public function getPost(): ?Post
     {
         return $this->post;
     }
@@ -97,6 +97,10 @@ class Comment
     public function setPost(Post $post): void
     {
         $this->post = $post;
+    }
 
+    public function __toString()
+    {
+        return (string)$this->id;
     }
 }

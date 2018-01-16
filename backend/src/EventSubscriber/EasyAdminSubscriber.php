@@ -29,17 +29,11 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     public function setPostSlug(GenericEvent $event)
     {
         $entity = $event->getSubject();
-        if (!($entity instanceof Post)) {
+        if (!($entity instanceof Post) || $entity->getSlug()) {
             return;
         }
 
-        $slug    = preg_replace('/\s+/', '-', mb_strtolower(trim(strip_tags($entity->getTitle())), 'UTF-8'));
-        $counter = 1;
-        while ($this->postRepository->findBy(['slug' => $slug])) {
-            $slug .= $counter++;
-        }
-
-        $entity->setSlug($slug);
+        $entity->setSlug(preg_replace('/\s+/', '-', mb_strtolower(trim(strip_tags($entity->getTitle())), 'UTF-8')));
         $event['entity'] = $entity;
     }
 }

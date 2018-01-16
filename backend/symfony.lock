@@ -59,6 +59,12 @@
     "doctrine/orm": {
         "version": "v2.5.14"
     },
+    "erusev/parsedown": {
+        "version": "1.6.4"
+    },
+    "ezyang/htmlpurifier": {
+        "version": "v4.9.3"
+    },
     "javiereguiluz/easyadmin-bundle": {
         "version": "1.17",
         "recipe": {
@@ -298,6 +304,9 @@
             "version": "1.5",
             "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
         }
+    },
+    "white-october/pagerfanta-bundle": {
+        "version": "v1.1.2"
     },
     "zendframework/zend-code": {
         "version": "3.3.0"
