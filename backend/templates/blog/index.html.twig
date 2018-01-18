@@ -1,23 +1,40 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
+    <br>
     {% for post in posts %}
-        <article class="post">
-            <h2>
-                <a href="{{ path('blog_post', {slug: post.slug}) }}">
-                    {{ post.title }}
-                </a>
-            </h2>
+        <div class="card mb-3">
+            {% if post.image %}
+                <img class="card-img-top" src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="Card image cap">
+            {% endif %}
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a href="{{ path('blog_post', {slug: post.slug}) }}">
+                        {{ post.title }}
+                    </a>
+                </h4>
+                <p class="card-text">{{ post.summary|md2html }}</p>
+            </div>
+            <div class="card-footer text-muted">
+                <span class="badge badge-secondary">{{ post.publishedAt|date("Y/m/d") }}</span>
+                {{ include('blog/_post_tags.html.twig') }}
+            </div>
+        </div>
+        {#<div class="blog-post">#}
+            {#<h2 class="blog-post-title">#}
+                {#<a href="{{ path('blog_post', {slug: post.slug}) }}">#}
+                    {#{{ post.title }}#}
+                {#</a>#}
+            {#</h2>#}
+            {#<p class="blog-post-meta text-muted">#}
+                {#{{ post.publishedAt|date("Y/m/d") }}#}
+            {#</p>#}
 
-            <p class="post-metadata">
-                <span class="metadata"><i class="fa fa-calendar"></i> date</span>
-                <span class="metadata"><i class="fa fa-user"></i> name</span>
-            </p>
+            {##}
 
-            {{ post.summary|md2html }}
 
-            {{ include('blog/_post_tags.html.twig') }}
-        </article>
+        {#</div>#}
+        <br>
     {% else %}
         <div class="well">{{ 'post.no_posts_found'|trans }}</div>
     {% endfor %}

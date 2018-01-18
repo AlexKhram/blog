@@ -35,6 +35,7 @@ class Post
      *
      * @ORM\Column(type="string")
      * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $title;
 
@@ -42,6 +43,7 @@ class Post
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Assert\Length(max=255)
      */
     private $slug;
 
@@ -50,6 +52,7 @@ class Post
      *
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="post.blank_summary")
+     * @Assert\Length(max=255)
      */
     private $summary;
 
@@ -58,7 +61,7 @@ class Post
      *
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="post.blank_content")
-     * @Assert\Length(min=10, minMessage="post.too_short_content")
+     * @Assert\Length(min=10)
      */
     private $content;
 
