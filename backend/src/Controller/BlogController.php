@@ -4,14 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Post;
+use App\Form\CommentType;
 use App\Repository\PostRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class BlogController
@@ -38,39 +37,31 @@ class BlogController extends AbstractController
     /**
      * @Template()
      * @Route("/posts/{slug}", name="blog_post")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      * @param Post $post
      * @return array
      */
-    public function postShow(Post $post): array
-    {
-        return['post' => $post];
-    }
-
-    /**
-     * @Route("/comment/{postSlug}/new", name="comment_new")
-     * @Method("POST")
-     * @ParamConverter("post", options={"mapping": {"postSlug": "slug"}})
-     */
-    public function commentNew(Request $request, Post $post): Response
+    public function postShow(Post $post, Request $request): array
     {
         $comment = new Comment();
-        $post->addComment($comment);
+        $form    = $this->createForm(CommentType::class, $comment);
 
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $comment->setPost($post);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($comment);
+                $em->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
-
-            return $this->redirectToRoute('blog_post', ['slug' => $post->getSlug()]);
+                $comment = new Comment();
+                $form    = $this->createForm(CommentType::class, $comment);
+            }
         }
 
-        return $this->render('blog/comment_form_error.html.twig', [
+        return [
             'post' => $post,
-            'form' => $form->createView(),
-        ]);
+            'form' => $form->createView()
+        ];
     }
 }

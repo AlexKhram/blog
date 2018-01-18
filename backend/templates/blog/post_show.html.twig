@@ -12,6 +12,8 @@
 
     {{ include('blog/_post_tags.html.twig') }}
 
+    {{ include('blog/_comment_form.html.twig') }}
+
     <h3>
         <i class="fa fa-comments" aria-hidden="true"></i> {{ 'post.num_comments'|transchoice(post.comments|length) }}
     </h3>
@@ -20,9 +22,6 @@
         <div class="row post-comment">
             <a name="comment_{{ comment.id }}"></a>
             <h4 class="col-sm-3">
-                {# it's not mandatory to set the timezone in localizeddate(). This is done to
-                   avoid errors when the 'intl' PHP extension is not available and the application
-                   is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
                 <strong>{{ comment.publishedAt|date("m/d/Y") }}</strong>
             </h4>
             <div class="col-sm-9">

@@ -28,6 +28,12 @@ easy_admin:
                     - { property: 'comments', type_options: { expanded: true, multiple: true } }
         Comment:
             class: App\Entity\Comment
+            list:
+                fields:
+                    - 'id'
+                    - { property: 'publishedAt', format: 'Y/n/j H:i:s' }
+                    - 'content'
+                    - 'post'
             form:
                 fields:
                     - 'content'
